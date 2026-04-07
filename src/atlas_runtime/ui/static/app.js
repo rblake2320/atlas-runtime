@@ -1,5 +1,8 @@
 function setText(id, value) {
-  document.getElementById(id).textContent = value;
+  const node = document.getElementById(id);
+  if (node) {
+    node.textContent = value;
+  }
 }
 
 function initials(name) {
@@ -8,7 +11,7 @@ function initials(name) {
 
 function prettyPayload(payload) {
   const text = JSON.stringify(payload || {}, null, 2);
-  return text.length > 240 ? `${text.slice(0, 240)}...` : text;
+  return text.length > 260 ? `${text.slice(0, 260)}...` : text;
 }
 
 function renderFiles(files) {
@@ -20,7 +23,6 @@ function renderFiles(files) {
     item.textContent = `${file.kind === 'dir' ? '▸' : '•'} ${file.path}`;
     list.appendChild(item);
   }
-  setText('file-count', `${files.length} items`);
 }
 
 function renderEvents(events) {
@@ -68,16 +70,16 @@ function renderAgents(agents) {
     `;
     mount.appendChild(row);
   }
-  setText('agent-count', `${agents.length} owners`);
+  setText('agent-count', `${agents.length}`);
 }
 
 function renderTasks(tasks) {
   const mount = document.getElementById('task-list');
   mount.innerHTML = '';
   for (const task of tasks) {
+    const deps = task.depends_on?.length ? task.depends_on.join(', ') : 'none';
     const row = document.createElement('article');
     row.className = 'task-card';
-    const deps = task.depends_on?.length ? task.depends_on.join(', ') : 'none';
     row.innerHTML = `
       <header>
         <div class="task-id">${task.id}</div>
@@ -91,7 +93,7 @@ function renderTasks(tasks) {
     `;
     mount.appendChild(row);
   }
-  setText('task-count', `${tasks.length} tasks`);
+  setText('task-count', `${tasks.length}`);
 }
 
 function renderGaps(gaps) {
@@ -102,16 +104,28 @@ function renderGaps(gaps) {
     item.textContent = gap;
     mount.appendChild(item);
   }
-  setText('gap-count', `${gaps.length} open`);
+  setText('gap-count', `${gaps.length}`);
 }
 
-function applyPill(id, status) {
+function applyPill(id, status, muted = false) {
   const el = document.getElementById(id);
+  if (!el) {
+    return;
+  }
   el.textContent = status;
+  if (muted) {
+    el.classList.add('muted');
+  } else {
+    el.classList.remove('muted');
+  }
   const pass = status === 'PASS';
-  el.style.background = pass ? 'rgba(120,241,181,0.16)' : 'rgba(255,139,139,0.14)';
-  el.style.borderColor = pass ? 'rgba(120,241,181,0.15)' : 'rgba(255,139,139,0.18)';
-  el.style.color = pass ? '#78f1b5' : '#ff8b8b';
+  if (muted) {
+    el.style.background = pass ? '#eef2ff' : '#fff1f2';
+    el.style.color = pass ? '#4f46e5' : '#be123c';
+  } else {
+    el.style.background = pass ? '#e6f6f2' : '#feeceb';
+    el.style.color = pass ? '#10a37f' : '#dc2626';
+  }
 }
 
 async function fetchStatus() {
@@ -119,7 +133,6 @@ async function fetchStatus() {
   const data = await response.json();
 
   setText('workspace-path', data.workspace);
-  setText('workspace-mode', data.workspace.includes('Atlas Autonomous Group') ? 'Atlas Source' : 'Wrapper');
   setText('metric-score', data.metrics.score);
   setText('metric-status', data.metrics.status);
   setText('metric-delivered', data.metrics.delivered);
@@ -127,22 +140,22 @@ async function fetchStatus() {
   setText('metric-events', data.metrics.event_count);
 
   setText('quick-doctor', data.doctor.status);
-  setText('quick-replay', data.replay.status);
   setText('quick-verify', data.verify.status);
+  setText('quick-replay', data.replay.status);
   setText('quick-gaps', `${data.gap_meter.active} active`);
 
-  applyPill('doctor-pill', data.doctor.status);
-  applyPill('verify-pill', data.verify.status);
+  applyPill('doctor-pill', data.doctor.status, false);
+  applyPill('verify-pill', data.verify.status, true);
 
   document.getElementById('doctor-json').textContent = JSON.stringify(data.doctor, null, 2);
   document.getElementById('replay-json').textContent = JSON.stringify(data.replay, null, 2);
   document.getElementById('gap-json').textContent = JSON.stringify(data.gap_meter, null, 2);
 
-  renderGaps(data.verify.open_gaps || []);
   renderFiles(data.files || []);
   renderEvents(data.events || []);
   renderAgents(data.agents || []);
   renderTasks(data.tasks || []);
+  renderGaps(data.verify.open_gaps || []);
 }
 
 async function runDemo() {

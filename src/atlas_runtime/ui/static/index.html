@@ -3,177 +3,167 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Atlas Runtime Control Room</title>
+  <title>Atlas Runtime</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <div class="shell-frame">
-    <aside class="nav-rail">
-      <div class="brand-block">
-        <div class="brand-mark">AT</div>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-dot"></div>
         <div>
-          <p class="kicker">Atlas Runtime</p>
-          <h1>Control Room</h1>
+          <p class="sidebar-kicker">Atlas Runtime</p>
+          <h1>Workspace Console</h1>
         </div>
       </div>
 
-      <section class="rail-section workspace-card">
-        <header>
-          <span class="section-label">Workspace</span>
-          <span id="workspace-mode" class="mini-chip">Local</span>
-        </header>
+      <button id="run-demo" class="primary-action">Run Demo Pipeline</button>
+
+      <section class="sidebar-block">
+        <div class="sidebar-label">Workspace</div>
         <div id="workspace-path" class="workspace-path"></div>
       </section>
 
-      <section class="rail-section grow">
-        <header>
-          <span class="section-label">Workspace Tree</span>
-          <span id="file-count" class="section-stat">--</span>
-        </header>
-        <ul id="file-tree" class="tree-list"></ul>
+      <section class="sidebar-block grow">
+        <div class="sidebar-label">Files</div>
+        <ul id="file-tree" class="file-tree"></ul>
       </section>
 
-      <section class="rail-section quick-links">
-        <header>
-          <span class="section-label">Proof Surface</span>
-        </header>
-        <div class="quick-link-grid">
-          <div class="quick-link">
-            <span>Doctor</span>
-            <strong id="quick-doctor">--</strong>
-          </div>
-          <div class="quick-link">
-            <span>Replay</span>
-            <strong id="quick-replay">--</strong>
-          </div>
-          <div class="quick-link">
-            <span>Verify</span>
-            <strong id="quick-verify">--</strong>
-          </div>
-          <div class="quick-link">
-            <span>Gaps</span>
-            <strong id="quick-gaps">--</strong>
-          </div>
+      <section class="sidebar-block mini-grid">
+        <div class="mini-stat">
+          <span>Doctor</span>
+          <strong id="quick-doctor">--</strong>
+        </div>
+        <div class="mini-stat">
+          <span>Verify</span>
+          <strong id="quick-verify">--</strong>
+        </div>
+        <div class="mini-stat">
+          <span>Replay</span>
+          <strong id="quick-replay">--</strong>
+        </div>
+        <div class="mini-stat">
+          <span>Gaps</span>
+          <strong id="quick-gaps">--</strong>
         </div>
       </section>
     </aside>
 
-    <main class="main-panel">
+    <main class="main-shell">
       <header class="topbar">
-        <div class="topbar-left">
-          <div class="window-dots">
-            <span></span><span></span><span></span>
-          </div>
-          <div>
-            <p class="kicker">Governed Autonomous Runtime</p>
-            <h2>Live operator shell backed by real workspace state</h2>
-          </div>
+        <div>
+          <p class="topbar-kicker">Governed autonomous runtime</p>
+          <h2>Proof-first operator shell</h2>
         </div>
         <div class="topbar-actions">
-          <button id="refresh" class="ghost-btn">Refresh</button>
-          <button id="run-demo" class="accent-btn">Run Demo Pipeline</button>
+          <button id="refresh" class="secondary-action">Refresh</button>
+          <span id="doctor-pill" class="status-pill">--</span>
+          <span id="verify-pill" class="status-pill muted">--</span>
         </div>
       </header>
 
-      <section class="hero-grid">
-        <article class="hero-console panel">
+      <section class="hero-row">
+        <div class="hero-copy">
+          <h3>Live state from the workspace, not a mocked product shell.</h3>
+          <p>The console only renders what Atlas can prove right now: task delivery, replay integrity, doctor status, gap progress, and recent event flow.</p>
+        </div>
+        <div class="hero-metrics">
+          <article class="metric-card">
+            <span>Score</span>
+            <strong id="metric-score">--</strong>
+          </article>
+          <article class="metric-card">
+            <span>Status</span>
+            <strong id="metric-status">--</strong>
+          </article>
+          <article class="metric-card">
+            <span>Delivered</span>
+            <strong id="metric-delivered">--</strong>
+          </article>
+          <article class="metric-card">
+            <span>Gap Progress</span>
+            <strong id="metric-gap">--</strong>
+          </article>
+          <article class="metric-card">
+            <span>Events</span>
+            <strong id="metric-events">--</strong>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <section class="conversation-pane panel">
           <div class="panel-head">
             <div>
-              <span class="section-label">Runtime Feed</span>
+              <p class="panel-kicker">Runtime feed</p>
               <h3>Recent events</h3>
-            </div>
-            <div class="feed-meta">
-              <span id="doctor-pill" class="status-pill">--</span>
-              <span id="verify-pill" class="status-pill muted-pill">--</span>
             </div>
           </div>
           <div id="event-stream" class="event-stream"></div>
-          <div class="composer-row">
-            <div class="composer-shell">
-              <span class="composer-label">Operator note</span>
-              <span class="composer-copy">Read-only console. Actions come from real runtime commands only.</span>
+          <div class="composer">
+            <div class="composer-input">
+              <span class="composer-placeholder">Read-only. Use CLI actions to mutate runtime state.</span>
             </div>
           </div>
-        </article>
+        </section>
 
-        <aside class="hero-side">
-          <section class="metrics-strip panel">
-            <div class="metric-tile">
-              <span>Score</span>
-              <strong id="metric-score">--</strong>
-            </div>
-            <div class="metric-tile">
-              <span>Status</span>
-              <strong id="metric-status">--</strong>
-            </div>
-            <div class="metric-tile">
-              <span>Delivered</span>
-              <strong id="metric-delivered">--</strong>
-            </div>
-            <div class="metric-tile">
-              <span>Gap Progress</span>
-              <strong id="metric-gap">--</strong>
-            </div>
-            <div class="metric-tile">
-              <span>Events</span>
-              <strong id="metric-events">--</strong>
-            </div>
-          </section>
-
-          <section class="panel agents-panel">
+        <aside class="side-pane">
+          <section class="panel compact-panel">
             <div class="panel-head">
               <div>
-                <span class="section-label">Agents</span>
-                <h3>Execution owners</h3>
+                <p class="panel-kicker">Owners</p>
+                <h3>Agents</h3>
               </div>
-              <span id="agent-count" class="section-stat">--</span>
+              <span id="agent-count" class="count-pill">--</span>
             </div>
             <div id="agent-list" class="agent-list"></div>
+          </section>
+
+          <section class="panel compact-panel">
+            <div class="panel-head">
+              <div>
+                <p class="panel-kicker">Risk</p>
+                <h3>Open gaps</h3>
+              </div>
+              <span id="gap-count" class="count-pill">--</span>
+            </div>
+            <ul id="open-gaps" class="gap-list"></ul>
           </section>
         </aside>
       </section>
 
-      <section class="bottom-grid">
-        <section class="panel tasks-panel">
+      <section class="bottom-row">
+        <section class="panel">
           <div class="panel-head">
             <div>
-              <span class="section-label">Tasks</span>
-              <h3>Pipeline board</h3>
+              <p class="panel-kicker">Execution</p>
+              <h3>Task pipeline</h3>
             </div>
-            <span id="task-count" class="section-stat">--</span>
+            <span id="task-count" class="count-pill">--</span>
           </div>
-          <div id="task-list" class="task-grid"></div>
+          <div id="task-list" class="task-list"></div>
         </section>
 
-        <section class="panel insight-panel">
+        <section class="panel proof-panel">
           <div class="panel-head">
             <div>
-              <span class="section-label">Verification</span>
-              <h3>Truth controls</h3>
+              <p class="panel-kicker">Proof</p>
+              <h3>Verification surfaces</h3>
             </div>
           </div>
-
-          <div class="json-grid">
-            <article class="json-card">
+          <div class="proof-grid">
+            <article class="proof-card">
               <h4>Doctor</h4>
               <pre id="doctor-json"></pre>
             </article>
-            <article class="json-card">
+            <article class="proof-card">
               <h4>Replay</h4>
               <pre id="replay-json"></pre>
             </article>
-            <article class="json-card">
-              <h4>Gap Meter</h4>
+            <article class="proof-card">
+              <h4>Gap meter</h4>
               <pre id="gap-json"></pre>
             </article>
-          </div>
-
-          <div class="gaps-block">
-            <div class="gaps-head">
-              <h4>Open gaps</h4>
-              <span id="gap-count" class="section-stat">--</span>
-            </div>
-            <ul id="open-gaps" class="gap-list"></ul>
           </div>
         </section>
       </section>
