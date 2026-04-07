@@ -5,6 +5,7 @@
 It is intentionally small:
 - installable Python package
 - one CLI entry point
+- one local dashboard UI
 - one read-only MCP-like server
 - append-only event spine with deterministic replay
 - truthful verification that separates verified capabilities from open gaps
@@ -13,7 +14,8 @@ It is intentionally small:
 - standalone workspace bootstrap
 - append-only event log with hash-chain verification
 - dependency-aware demo pipeline
-- `doctor`, `verify`, `gap-meter`, and `interop-replay` commands
+- `doctor`, `verify`, `gap-meter`, `interop-replay`, and `ui` commands
+- local dashboard UI for status, replay, and gap inspection
 - read-only MCP-like HTTP server exposing doctor/status tools
 - portable test suite that passes from a clean clone
 
@@ -38,8 +40,16 @@ atlas doctor demo-workspace
 atlas verify demo-workspace
 atlas interop-replay demo-workspace
 atlas gap-meter demo-workspace
-python -m atlas_runtime.mcp demo-workspace --once
+atlas ui demo-workspace --host 127.0.0.1 --port 8788
 ```
+
+## UI
+`atlas ui` launches a local dashboard with:
+- doctor status
+- verify status
+- gap meter
+- replay summary
+- one-click demo execution
 
 ## MCP surface
 ```powershell

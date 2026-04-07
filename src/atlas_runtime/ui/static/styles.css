@@ -1,0 +1,87 @@
+:root {
+  --bg: #f3efe7;
+  --ink: #1e2430;
+  --muted: #5b6472;
+  --card: #fffdf8;
+  --line: #d8cfbf;
+  --accent: #135d66;
+  --accent-2: #f4a261;
+  --shadow: 0 18px 45px rgba(18, 27, 34, 0.08);
+}
+body {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  color: var(--ink);
+  background: radial-gradient(circle at top, #fff7ea, var(--bg) 45%, #ebe3d6 100%);
+}
+.shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 48px 24px 64px;
+}
+.hero {
+  margin-bottom: 28px;
+}
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  font-size: 12px;
+}
+h1 {
+  margin: 0 0 12px;
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 1;
+}
+.lede {
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+}
+button {
+  border: 0;
+  padding: 12px 18px;
+  font-size: 0.95rem;
+  border-radius: 999px;
+  cursor: pointer;
+  background: var(--accent);
+  color: white;
+  box-shadow: var(--shadow);
+}
+button:last-child {
+  background: var(--accent-2);
+  color: #2a1f12;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+}
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+.card h2 {
+  margin-top: 0;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+pre, ul {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: "Cascadia Code", Consolas, monospace;
+  font-size: 0.88rem;
+}
+ul {
+  padding-left: 18px;
+}

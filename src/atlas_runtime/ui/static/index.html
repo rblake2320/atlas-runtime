@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atlas Runtime UI</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <p class="eyebrow">Atlas Runtime</p>
+      <h1>Governed autonomous runtime dashboard</h1>
+      <p class="lede">A local product shell for the wrapper: live health, replay integrity, gap progress, and one-click demo execution.</p>
+      <div class="actions">
+        <button id="refresh">Refresh</button>
+        <button id="run-demo">Run Demo Pipeline</button>
+      </div>
+    </section>
+    <section class="grid">
+      <article class="card"><h2>Workspace</h2><pre id="workspace"></pre></article>
+      <article class="card"><h2>Doctor</h2><pre id="doctor"></pre></article>
+      <article class="card"><h2>Verify</h2><pre id="verify"></pre></article>
+      <article class="card"><h2>Gap Meter</h2><pre id="gap-meter"></pre></article>
+      <article class="card"><h2>Replay</h2><pre id="replay"></pre></article>
+      <article class="card"><h2>Open Gaps</h2><ul id="open-gaps"></ul></article>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

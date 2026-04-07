@@ -1,6 +1,6 @@
 # Verified Capabilities
 
-Snapshot date: 2026-04-06
+Snapshot date: 2026-04-07
 
 This document lists the capabilities that are verified in the wrapper repo or
 in the Atlas source workspace that the wrapper reads from.
@@ -9,10 +9,11 @@ in the Atlas source workspace that the wrapper reads from.
 
 - Installable package metadata in `pyproject.toml`.
 - `atlas` console script entrypoint.
+- Local dashboard UI served by `atlas ui`.
 - Read-only MCP-style server with `doctor`, `status`, and `gap_meter` tools.
 - Event store with append-only hash chain and witness file.
 - Workspace initializer, demo pipeline, replay, and verify surfaces.
-- Test suite that passes on Windows.
+- Portable test suite that passes on Windows.
 
 ## Verified From The Atlas Source
 
@@ -33,7 +34,7 @@ in the Atlas source workspace that the wrapper reads from.
 
 ## Verified Evidence Snapshot
 
-- Wrapper tests: `9 passed`.
+- Wrapper tests: `10 passed`.
 - Editable install: `PASS`.
 - Atlas doctor: `PASS`.
 - Atlas full validation: `PASS`.
@@ -43,10 +44,11 @@ in the Atlas source workspace that the wrapper reads from.
 
 ## Verified Claims Snapshot
 
-- Scorecard: `95/100`
-- Status: `production_ready`
+- Wrapper demo score: `95/100`
+- Wrapper status: `production_ready`
+- Wrapper UI launches locally
 - Gap meter: live and measurable
-- Claims: fresh at the time of the latest audit
+- Claims: fresh at the time of the latest Atlas audit
 
 ## What This Does Not Prove
 

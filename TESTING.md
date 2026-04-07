@@ -20,6 +20,7 @@ atlas doctor demo-workspace
 atlas verify demo-workspace
 atlas interop-replay demo-workspace
 atlas gap-meter demo-workspace
+atlas ui demo-workspace --host 127.0.0.1 --port 8788
 python -m atlas_runtime.mcp demo-workspace --once
 ```
 
@@ -29,6 +30,7 @@ Expected truths:
 - `atlas interop-replay` returns `PASS`
 - `atlas run-demo` delivers 3 seeded tasks
 - `atlas gap-meter` shows non-zero progress and still-open gaps
+- `atlas ui` launches a local dashboard
 - `python -m atlas_runtime.mcp demo-workspace --once` returns doctor/status/gap meter JSON
 
 ## Optional Atlas-source verification

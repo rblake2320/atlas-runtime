@@ -7,6 +7,7 @@ from pathlib import Path
 from atlas_runtime import __version__
 from atlas_runtime.core.runtime import doctor, gap_meter, init_workspace, replay, run_demo, verify
 from atlas_runtime.mcp.server import serve as serve_mcp
+from atlas_runtime.ui.server import serve_ui
 
 
 def emit(payload: dict) -> None:
@@ -38,6 +39,11 @@ def main() -> int:
     serve_cmd.add_argument("--host", default="127.0.0.1")
     serve_cmd.add_argument("--port", default=8766, type=int)
 
+    ui_cmd = sub.add_parser("ui", help="Launch the local Atlas Runtime dashboard.")
+    ui_cmd.add_argument("target", nargs="?", default="atlas-workspace")
+    ui_cmd.add_argument("--host", default="127.0.0.1")
+    ui_cmd.add_argument("--port", default=8788, type=int)
+
     args = parser.parse_args()
 
     if args.command == "init":
@@ -58,6 +64,9 @@ def main() -> int:
         result = gap_meter(target)
     elif args.command == "mcp":
         serve_mcp(target, host=args.host, port=args.port)
+        return 0
+    elif args.command == "ui":
+        serve_ui(target, host=args.host, port=args.port)
         return 0
     else:
         parser.error(f"unknown command: {args.command}")
