@@ -3,96 +3,178 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Atlas Runtime Cockpit</title>
+  <title>Atlas Runtime Control Room</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <div class="app-shell">
-    <aside class="left-rail">
-      <div class="brand">
-        <div class="brand-mark">A</div>
+  <div class="shell-frame">
+    <aside class="nav-rail">
+      <div class="brand-block">
+        <div class="brand-mark">AT</div>
         <div>
-          <p class="eyebrow">Atlas Runtime</p>
-          <h1>Cockpit</h1>
+          <p class="kicker">Atlas Runtime</p>
+          <h1>Control Room</h1>
         </div>
       </div>
-      <div class="rail-block">
-        <div class="rail-title">Workspace</div>
+
+      <section class="rail-section workspace-card">
+        <header>
+          <span class="section-label">Workspace</span>
+          <span id="workspace-mode" class="mini-chip">Local</span>
+        </header>
         <div id="workspace-path" class="workspace-path"></div>
-      </div>
-      <div class="rail-block grow">
-        <div class="rail-title">Files</div>
-        <ul id="file-tree" class="tree"></ul>
-      </div>
+      </section>
+
+      <section class="rail-section grow">
+        <header>
+          <span class="section-label">Workspace Tree</span>
+          <span id="file-count" class="section-stat">--</span>
+        </header>
+        <ul id="file-tree" class="tree-list"></ul>
+      </section>
+
+      <section class="rail-section quick-links">
+        <header>
+          <span class="section-label">Proof Surface</span>
+        </header>
+        <div class="quick-link-grid">
+          <div class="quick-link">
+            <span>Doctor</span>
+            <strong id="quick-doctor">--</strong>
+          </div>
+          <div class="quick-link">
+            <span>Replay</span>
+            <strong id="quick-replay">--</strong>
+          </div>
+          <div class="quick-link">
+            <span>Verify</span>
+            <strong id="quick-verify">--</strong>
+          </div>
+          <div class="quick-link">
+            <span>Gaps</span>
+            <strong id="quick-gaps">--</strong>
+          </div>
+        </div>
+      </section>
     </aside>
 
-    <main class="main-stage">
+    <main class="main-panel">
       <header class="topbar">
-        <div class="tabs">
-          <span class="tab active">Runtime</span>
-          <span class="tab">Verify</span>
-          <span class="tab">Replay</span>
+        <div class="topbar-left">
+          <div class="window-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <div>
+            <p class="kicker">Governed Autonomous Runtime</p>
+            <h2>Live operator shell backed by real workspace state</h2>
+          </div>
         </div>
-        <div class="actions">
-          <button id="refresh">Refresh</button>
-          <button id="run-demo">Run Demo Pipeline</button>
+        <div class="topbar-actions">
+          <button id="refresh" class="ghost-btn">Refresh</button>
+          <button id="run-demo" class="accent-btn">Run Demo Pipeline</button>
         </div>
       </header>
 
-      <section class="hero-panel">
-        <div class="hero-copy">
-          <p class="eyebrow">Governed Autonomous Runtime</p>
-          <h2>Live control surface for real workspace state</h2>
-          <p>The dashboard only shows what the wrapper can prove from the workspace: doctor health, event replay, delivered tasks, and open gaps.</p>
-        </div>
-        <div class="metrics-grid">
-          <div class="metric-card"><span>Score</span><strong id="metric-score">--</strong></div>
-          <div class="metric-card"><span>Status</span><strong id="metric-status">--</strong></div>
-          <div class="metric-card"><span>Delivered</span><strong id="metric-delivered">--</strong></div>
-          <div class="metric-card"><span>Gap Progress</span><strong id="metric-gap">--</strong></div>
-          <div class="metric-card"><span>Events</span><strong id="metric-events">--</strong></div>
-        </div>
-      </section>
-
-      <section class="stream-layout">
-        <section class="conversation-panel">
+      <section class="hero-grid">
+        <article class="hero-console panel">
           <div class="panel-head">
-            <h3>Recent events</h3>
-            <span id="doctor-pill" class="pill">--</span>
+            <div>
+              <span class="section-label">Runtime Feed</span>
+              <h3>Recent events</h3>
+            </div>
+            <div class="feed-meta">
+              <span id="doctor-pill" class="status-pill">--</span>
+              <span id="verify-pill" class="status-pill muted-pill">--</span>
+            </div>
           </div>
           <div id="event-stream" class="event-stream"></div>
-        </section>
+          <div class="composer-row">
+            <div class="composer-shell">
+              <span class="composer-label">Operator note</span>
+              <span class="composer-copy">Read-only console. Actions come from real runtime commands only.</span>
+            </div>
+          </div>
+        </article>
 
-        <aside class="right-stack">
-          <section class="panel">
-            <div class="panel-head"><h3>Agents</h3></div>
-            <div id="agent-list" class="agent-list"></div>
+        <aside class="hero-side">
+          <section class="metrics-strip panel">
+            <div class="metric-tile">
+              <span>Score</span>
+              <strong id="metric-score">--</strong>
+            </div>
+            <div class="metric-tile">
+              <span>Status</span>
+              <strong id="metric-status">--</strong>
+            </div>
+            <div class="metric-tile">
+              <span>Delivered</span>
+              <strong id="metric-delivered">--</strong>
+            </div>
+            <div class="metric-tile">
+              <span>Gap Progress</span>
+              <strong id="metric-gap">--</strong>
+            </div>
+            <div class="metric-tile">
+              <span>Events</span>
+              <strong id="metric-events">--</strong>
+            </div>
           </section>
-          <section class="panel">
-            <div class="panel-head"><h3>Open gaps</h3></div>
-            <ul id="open-gaps" class="gap-list"></ul>
+
+          <section class="panel agents-panel">
+            <div class="panel-head">
+              <div>
+                <span class="section-label">Agents</span>
+                <h3>Execution owners</h3>
+              </div>
+              <span id="agent-count" class="section-stat">--</span>
+            </div>
+            <div id="agent-list" class="agent-list"></div>
           </section>
         </aside>
       </section>
 
-      <section class="lower-grid">
-        <section class="panel">
-          <div class="panel-head"><h3>Task pipeline</h3></div>
-          <div id="task-list" class="task-list"></div>
+      <section class="bottom-grid">
+        <section class="panel tasks-panel">
+          <div class="panel-head">
+            <div>
+              <span class="section-label">Tasks</span>
+              <h3>Pipeline board</h3>
+            </div>
+            <span id="task-count" class="section-stat">--</span>
+          </div>
+          <div id="task-list" class="task-grid"></div>
         </section>
-        <section class="panel compact-grid">
-          <article>
-            <h4>Doctor</h4>
-            <pre id="doctor-json"></pre>
-          </article>
-          <article>
-            <h4>Replay</h4>
-            <pre id="replay-json"></pre>
-          </article>
-          <article>
-            <h4>Gap meter</h4>
-            <pre id="gap-json"></pre>
-          </article>
+
+        <section class="panel insight-panel">
+          <div class="panel-head">
+            <div>
+              <span class="section-label">Verification</span>
+              <h3>Truth controls</h3>
+            </div>
+          </div>
+
+          <div class="json-grid">
+            <article class="json-card">
+              <h4>Doctor</h4>
+              <pre id="doctor-json"></pre>
+            </article>
+            <article class="json-card">
+              <h4>Replay</h4>
+              <pre id="replay-json"></pre>
+            </article>
+            <article class="json-card">
+              <h4>Gap Meter</h4>
+              <pre id="gap-json"></pre>
+            </article>
+          </div>
+
+          <div class="gaps-block">
+            <div class="gaps-head">
+              <h4>Open gaps</h4>
+              <span id="gap-count" class="section-stat">--</span>
+            </div>
+            <ul id="open-gaps" class="gap-list"></ul>
+          </div>
         </section>
       </section>
     </main>
