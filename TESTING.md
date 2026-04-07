@@ -1,66 +1,39 @@
-# Testing Atlas Runtime Wrapper
+# Testing
 
-This repository is the wrapper contract and test plan.
-The wrapper code exists and the suite is already passing; this file defines the
-commands that should keep it honest as it evolves.
-
-## Run This First
-
+## Install
 ```powershell
-python -m pip install -e .
-python -m pytest
+pip install -e .
 ```
 
-Expected result at the time of this snapshot:
-- editable install succeeds
-- `9` tests pass
-
-## Wrapper Commands To Verify
-
+## Run tests
 ```powershell
-atlas init atlas-workspace
-atlas doctor atlas-workspace
-atlas verify atlas-workspace
-atlas gap-meter atlas-workspace
-atlas replay atlas-workspace
-atlas run-demo atlas-workspace
-atlas mcp serve atlas-workspace --host 127.0.0.1 --port 8766
+pytest
 ```
 
-## What Those Commands Must Prove
+The published test suite is portable. It does not depend on a local Atlas monorepo checkout.
 
-- `atlas init` creates a workspace with event state and evidence dirs.
-- `atlas doctor` reports the truth-oriented health check.
-- `atlas verify` reports the current verified capability snapshot.
-- `atlas gap-meter` reports live gap progress.
-- `atlas replay` verifies the event chain.
-- `atlas run-demo` advances the small demo pipeline and writes evidence.
-- `atlas mcp serve` exposes read-only `doctor`, `status`, and `gap_meter`
-  tools.
-
-## Source Verification Commands
-
-Run these against the Atlas source workspace when you want to verify the
-upstream capabilities that this wrapper reads from:
-
+## Manual verification
 ```powershell
-python scripts\business_doctor.py
-python scripts\business_full_validation.py run
-python scripts\business_claim_audit.py
-python scripts\business_event_audit.py
-python scripts\business_wiring_audit.py
-python scripts\business_schema_audit.py
-python scripts\business_sdk_audit.py
-python scripts\business_code_inspector.py
-python scripts\business_failure_injection.py
-python scripts\business_agent_activity_audit.py
-python scripts\business_gap_meter.py status
+atlas init demo-workspace
+atlas run-demo demo-workspace
+atlas doctor demo-workspace
+atlas verify demo-workspace
+atlas interop-replay demo-workspace
+atlas gap-meter demo-workspace
+python -m atlas_runtime.mcp demo-workspace --once
 ```
 
-## Non-Negotiables
+Expected truths:
+- `atlas doctor` returns `PASS`
+- `atlas verify` returns `PASS`
+- `atlas interop-replay` returns `PASS`
+- `atlas run-demo` delivers 3 seeded tasks
+- `atlas gap-meter` shows non-zero progress and still-open gaps
+- `python -m atlas_runtime.mcp demo-workspace --once` returns doctor/status/gap meter JSON
 
-- Do not count mock results as proof.
-- Do not count stale reports as current claims.
-- Do not count chat statements as evidence unless they are backed by a file or
-  command output.
-- Do not claim the wrapper is complete until the wrapper commands actually run.
+## Optional Atlas-source verification
+If you also have a full Atlas workspace locally, you can point the MCP snapshot mode at it:
+```powershell
+python -m atlas_runtime.mcp "C:\path\to\Atlas Autonomous Group" --once
+```
+That path is optional and is not part of the public test contract.

@@ -1,60 +1,59 @@
-# Atlas Runtime Wrapper
+# Atlas Runtime
 
-This repository contains the initial installable Atlas runtime wrapper.
-It exposes a CLI, a read-only MCP-style surface, and a small event-sourced
-workspace model built from verified Atlas capabilities.
+`atlas-runtime` is the public wrapper around the proven Atlas runtime surfaces.
 
-## Verified In This Repo
+It is intentionally small:
+- installable Python package
+- one CLI entry point
+- one read-only MCP-like server
+- append-only event spine with deterministic replay
+- truthful verification that separates verified capabilities from open gaps
 
-- `atlas` CLI entrypoint is present.
-- The package installs in editable mode with `pip install -e .`.
-- The MCP surface exposes read-only `doctor`, `status`, and `gap_meter` tools.
-- The event spine is append-only and tamper-evident.
-- The wrapper can initialize a workspace, run a demo pipeline, replay events,
-  and produce truth-oriented reports.
-- The test suite passes on Windows.
+## Verified now
+- standalone workspace bootstrap
+- append-only event log with hash-chain verification
+- dependency-aware demo pipeline
+- `doctor`, `verify`, `gap-meter`, and `interop-replay` commands
+- read-only MCP-like HTTP server exposing doctor/status tools
+- portable test suite that passes from a clean clone
 
-## Verified Atlas Source Capabilities Used By The Wrapper
+## Not yet proven
+- 24h+ autonomous runtime
+- non-zero learning-proof deltas
+- non-zero external-value wins
+- broad extension ecosystem
+- public release workflow or package publishing
 
-Snapshot date: 2026-04-06
+## Install
+```powershell
+cd atlas-runtime-repo
+pip install -e .
+```
 
-- Durable task-and-evidence workspace.
-- Event spine with chained hashes.
-- Doctor, full validation, claim audit, wiring audit, schema audit, SDK audit,
-  code inspector, failure injection, and agent activity audit.
-- Explicit gap owners with baselines, targets, verifier commands, and evidence
-  paths.
-- Budget and worktree surfaces.
-- A2A cards, MCP registry data, and SDK registry data.
-- Evidence-backed reports for score, runtime, and validation.
+## 5-minute path
+```powershell
+atlas init demo-workspace
+atlas run-demo demo-workspace
+atlas doctor demo-workspace
+atlas verify demo-workspace
+atlas interop-replay demo-workspace
+atlas gap-meter demo-workspace
+python -m atlas_runtime.mcp demo-workspace --once
+```
 
-See:
-- [Verified capabilities](docs/VERIFIED_CAPABILITIES.md)
-- [Open gaps](docs/OPEN_GAPS.md)
+## MCP surface
+```powershell
+atlas mcp serve demo-workspace --host 127.0.0.1 --port 8766
+```
 
-## Current Wrapper Surface
+Then browse or fetch:
+- `/tools`
+- `/tools/doctor`
+- `/tools/gap-meter`
+- `/tools/status`
 
-The wrapper is intentionally small and truthful:
+## Atlas-source mode
+The MCP server can also read a full Atlas workspace if you point it at one, but the published test suite does not require that local workspace.
 
-- `atlas init`
-- `atlas doctor`
-- `atlas verify`
-- `atlas gap-meter`
-- `atlas replay`
-- `atlas run-demo`
-- `atlas mcp serve`
-
-## Truth Rules
-
-- Only verified behavior belongs in the claim set.
-- If a capability is not backed by a file, command, or report, it belongs in
-  [Open gaps](docs/OPEN_GAPS.md).
-- Freshness matters. Claims should be revalidated, not assumed.
-- No mocks should count toward production claims.
-- No human relay should be counted as autonomous interop.
-
-## Current Repo State
-
-This repo is version controlled and currently has the first working wrapper
-implementation committed.
-The remaining work is productization, not a rewrite.
+## Why this exists
+The original Atlas workspace proved the governance and validation model. This wrapper makes the proven parts runnable by strangers without asking them to understand the whole internal workspace.
