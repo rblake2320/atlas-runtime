@@ -10,7 +10,12 @@ def test_dashboard_model_and_demo_action(tmp_path: Path) -> None:
     model = dashboard_model(workspace)
     assert model['doctor']['status'] == 'PASS'
     assert model['verify']['status'] == 'PASS'
+    assert 'metrics' in model
+    assert len(model['tasks']) == 3
+    assert len(model['events']) >= 1
+    assert len(model['files']) >= 1
     result = run_demo_action(workspace)
     assert result['result']['delivered'] == 3
     refreshed = dashboard_model(workspace)
     assert refreshed['verify']['delivered'] == 3
+    assert refreshed['metrics']['event_count'] >= 4

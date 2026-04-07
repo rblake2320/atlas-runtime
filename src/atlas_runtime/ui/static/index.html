@@ -3,29 +3,100 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Atlas Runtime UI</title>
+  <title>Atlas Runtime Cockpit</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <main class="shell">
-    <section class="hero">
-      <p class="eyebrow">Atlas Runtime</p>
-      <h1>Governed autonomous runtime dashboard</h1>
-      <p class="lede">A local product shell for the wrapper: live health, replay integrity, gap progress, and one-click demo execution.</p>
-      <div class="actions">
-        <button id="refresh">Refresh</button>
-        <button id="run-demo">Run Demo Pipeline</button>
+  <div class="app-shell">
+    <aside class="left-rail">
+      <div class="brand">
+        <div class="brand-mark">A</div>
+        <div>
+          <p class="eyebrow">Atlas Runtime</p>
+          <h1>Cockpit</h1>
+        </div>
       </div>
-    </section>
-    <section class="grid">
-      <article class="card"><h2>Workspace</h2><pre id="workspace"></pre></article>
-      <article class="card"><h2>Doctor</h2><pre id="doctor"></pre></article>
-      <article class="card"><h2>Verify</h2><pre id="verify"></pre></article>
-      <article class="card"><h2>Gap Meter</h2><pre id="gap-meter"></pre></article>
-      <article class="card"><h2>Replay</h2><pre id="replay"></pre></article>
-      <article class="card"><h2>Open Gaps</h2><ul id="open-gaps"></ul></article>
-    </section>
-  </main>
+      <div class="rail-block">
+        <div class="rail-title">Workspace</div>
+        <div id="workspace-path" class="workspace-path"></div>
+      </div>
+      <div class="rail-block grow">
+        <div class="rail-title">Files</div>
+        <ul id="file-tree" class="tree"></ul>
+      </div>
+    </aside>
+
+    <main class="main-stage">
+      <header class="topbar">
+        <div class="tabs">
+          <span class="tab active">Runtime</span>
+          <span class="tab">Verify</span>
+          <span class="tab">Replay</span>
+        </div>
+        <div class="actions">
+          <button id="refresh">Refresh</button>
+          <button id="run-demo">Run Demo Pipeline</button>
+        </div>
+      </header>
+
+      <section class="hero-panel">
+        <div class="hero-copy">
+          <p class="eyebrow">Governed Autonomous Runtime</p>
+          <h2>Live control surface for real workspace state</h2>
+          <p>The dashboard only shows what the wrapper can prove from the workspace: doctor health, event replay, delivered tasks, and open gaps.</p>
+        </div>
+        <div class="metrics-grid">
+          <div class="metric-card"><span>Score</span><strong id="metric-score">--</strong></div>
+          <div class="metric-card"><span>Status</span><strong id="metric-status">--</strong></div>
+          <div class="metric-card"><span>Delivered</span><strong id="metric-delivered">--</strong></div>
+          <div class="metric-card"><span>Gap Progress</span><strong id="metric-gap">--</strong></div>
+          <div class="metric-card"><span>Events</span><strong id="metric-events">--</strong></div>
+        </div>
+      </section>
+
+      <section class="stream-layout">
+        <section class="conversation-panel">
+          <div class="panel-head">
+            <h3>Recent events</h3>
+            <span id="doctor-pill" class="pill">--</span>
+          </div>
+          <div id="event-stream" class="event-stream"></div>
+        </section>
+
+        <aside class="right-stack">
+          <section class="panel">
+            <div class="panel-head"><h3>Agents</h3></div>
+            <div id="agent-list" class="agent-list"></div>
+          </section>
+          <section class="panel">
+            <div class="panel-head"><h3>Open gaps</h3></div>
+            <ul id="open-gaps" class="gap-list"></ul>
+          </section>
+        </aside>
+      </section>
+
+      <section class="lower-grid">
+        <section class="panel">
+          <div class="panel-head"><h3>Task pipeline</h3></div>
+          <div id="task-list" class="task-list"></div>
+        </section>
+        <section class="panel compact-grid">
+          <article>
+            <h4>Doctor</h4>
+            <pre id="doctor-json"></pre>
+          </article>
+          <article>
+            <h4>Replay</h4>
+            <pre id="replay-json"></pre>
+          </article>
+          <article>
+            <h4>Gap meter</h4>
+            <pre id="gap-json"></pre>
+          </article>
+        </section>
+      </section>
+    </main>
+  </div>
   <script src="/app.js"></script>
 </body>
 </html>
