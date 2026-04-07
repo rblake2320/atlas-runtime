@@ -2,16 +2,15 @@
 
 Snapshot date: 2026-04-06
 
-These are the gaps that are still open in the verified Atlas source and in this
-wrapper repo.
+These are the remaining gaps after the initial wrapper implementation.
 
 ## Wrapper Gaps
 
-- No installable package has been built in this repo yet.
-- No public CLI entrypoints exist in this repo yet.
-- No public MCP server implementation exists in this repo yet.
-- No replayable wrapper demo exists in this repo yet.
-- No release workflow exists in this repo yet.
+- No public release workflow has been added yet.
+- No published GitHub remote has been configured yet for this wrapper repo.
+- No public extension ecosystem exists yet.
+- No signed release artifacts or wheel publishing workflow exists yet.
+- No broader public demo page exists yet.
 
 ## Atlas Capability Gaps
 
@@ -19,17 +18,14 @@ wrapper repo.
 - `learning_proof` is still zero.
 - `external_value` is still zero.
 - `interop_replay` still needs stronger third-party replay proof.
-- The wrapper still needs a single obvious install path for strangers.
-- The wrapper still needs a public extension story.
-- The wrapper still needs a broad integration test suite for the public package.
 
 ## Proof Gaps
 
 - No external customer/revenue loop has been verified for the wrapper.
 - No Hermes-style skill promotion loop has been proven yet.
-- No Ultra-style event spine has been promoted into the wrapper repo yet.
+- No Ultra-level event spine has been promoted into the wrapper release story yet.
 - No 5-minute public demo has been published yet.
-- No automatic claim expiration scheduler has been added to the wrapper repo.
+- No automatic claim-expiration scheduler has been added to the wrapper repo.
 
 ## Why These Stay Here
 

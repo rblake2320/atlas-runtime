@@ -1,23 +1,47 @@
 # Testing Atlas Runtime Wrapper
 
 This repository is the wrapper contract and test plan.
-The current repo state is docs-only, so the real executable proof still lives in
-the Atlas source workspace until the wrapper code lands here.
+The wrapper code exists and the suite is already passing; this file defines the
+commands that should keep it honest as it evolves.
 
-## What Must Be Tested
+## Run This First
 
-- The Atlas source capabilities that the wrapper will expose.
-- The wrapper CLI surface once it exists.
-- The wrapper MCP surface once it exists.
-- The event spine and replay path.
-- The claim freshness and evidence regeneration path.
-- The audit chain: doctor, wiring, schema, SDK, code inspector, failure
-  injection, agent activity.
+```powershell
+python -m pip install -e .
+python -m pytest
+```
+
+Expected result at the time of this snapshot:
+- editable install succeeds
+- `9` tests pass
+
+## Wrapper Commands To Verify
+
+```powershell
+atlas init atlas-workspace
+atlas doctor atlas-workspace
+atlas verify atlas-workspace
+atlas gap-meter atlas-workspace
+atlas replay atlas-workspace
+atlas run-demo atlas-workspace
+atlas mcp serve atlas-workspace --host 127.0.0.1 --port 8766
+```
+
+## What Those Commands Must Prove
+
+- `atlas init` creates a workspace with event state and evidence dirs.
+- `atlas doctor` reports the truth-oriented health check.
+- `atlas verify` reports the current verified capability snapshot.
+- `atlas gap-meter` reports live gap progress.
+- `atlas replay` verifies the event chain.
+- `atlas run-demo` advances the small demo pipeline and writes evidence.
+- `atlas mcp serve` exposes read-only `doctor`, `status`, and `gap_meter`
+  tools.
 
 ## Source Verification Commands
 
-Run these against the Atlas workspace when you want to verify the proven
-capabilities that this wrapper should inherit:
+Run these against the Atlas source workspace when you want to verify the
+upstream capabilities that this wrapper reads from:
 
 ```powershell
 python scripts\business_doctor.py
@@ -32,37 +56,6 @@ python scripts\business_failure_injection.py
 python scripts\business_agent_activity_audit.py
 python scripts\business_gap_meter.py status
 ```
-
-## Expected Truthful Results
-
-The wrapper should only promote claims that are already verified in Atlas.
-At minimum, the test output should be able to prove:
-
-- the event chain is intact
-- the scorecard is recomputable
-- claims are fresh
-- audits pass
-- evidence files exist
-- the remaining gaps are still visible and not hidden
-
-## Wrapper Acceptance Criteria
-
-When the wrapper code lands, the repo should support at least:
-
-- `atlas init`
-- `atlas doctor`
-- `atlas verify`
-- `atlas gap-meter`
-- `atlas replay`
-- `atlas mcp serve`
-
-The test plan for those commands should cover:
-
-- exit code
-- stdout/stderr
-- generated evidence files
-- timestamp freshness
-- version control cleanliness
 
 ## Non-Negotiables
 

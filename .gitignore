@@ -1,0 +1,9 @@
+__pycache__/
+.pytest_cache/
+.pytest-tmp/
+atlas-workspace/
+demo-workspace/
+dist/
+build/
+*.egg-info/
+*.pyc
