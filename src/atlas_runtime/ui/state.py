@@ -5,6 +5,8 @@ from pathlib import Path
 from typing import Any
 
 from atlas_runtime.core.runtime import doctor, gap_meter, init_workspace, replay, run_demo, verify
+from atlas_runtime.platform.agents import list_agents
+from atlas_runtime.platform.backends import backend_status
 
 
 def _load_json(path: Path, default: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -46,21 +48,31 @@ def _workspace_tree(workspace: Path, depth: int = 2) -> list[dict[str, Any]]:
     return rows
 
 
-def _agents_from_tasks(tasks: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def _agents_for_dashboard(workspace: Path, tasks: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    registry = list_agents(workspace).get('agents', [])
     grouped: dict[str, dict[str, Any]] = {}
     for task in tasks:
         owner = task.get('owner', 'UNKNOWN')
-        row = grouped.setdefault(owner, {'name': owner, 'tasks': 0, 'delivered': 0, 'active': 0})
+        row = grouped.setdefault(owner, {'tasks': 0, 'delivered': 0, 'active': 0})
         row['tasks'] += 1
         if task.get('status') == 'delivered':
             row['delivered'] += 1
         else:
             row['active'] += 1
-    agents = []
-    for row in grouped.values():
-        status = 'delivered' if row['active'] == 0 else 'active'
-        agents.append({**row, 'status': status})
-    return sorted(agents, key=lambda item: item['name'])
+    rows: list[dict[str, Any]] = []
+    for agent in registry:
+        owner = agent.get('owner') or agent.get('name', '').upper()
+        stats = grouped.get(owner, {'tasks': 0, 'delivered': 0, 'active': 0})
+        rows.append({
+            'name': agent.get('name', agent.get('id', 'UNKNOWN')),
+            'status': 'delivered' if stats['active'] == 0 else 'active',
+            'tasks': stats['tasks'],
+            'delivered': stats['delivered'],
+            'active': stats['active'],
+            'mode': agent.get('mode', 'unknown'),
+            'backend': agent.get('backend', 'unknown'),
+        })
+    return rows
 
 
 def dashboard_model(workspace: Path) -> dict:
@@ -69,9 +81,10 @@ def dashboard_model(workspace: Path) -> dict:
     verify_result = verify(workspace)
     gap_result = gap_meter(workspace)
     replay_result = replay(workspace)
+    backend_result = backend_status(workspace)
     tasks = _task_list(workspace)
     events = _event_tail(workspace)
-    agents = _agents_from_tasks(tasks)
+    agents = _agents_for_dashboard(workspace, tasks)
     files = _workspace_tree(workspace)
     metrics = {
         'score': verify_result.get('scorecard', {}).get('score', 95),
@@ -87,6 +100,7 @@ def dashboard_model(workspace: Path) -> dict:
         'verify': verify_result,
         'gap_meter': gap_result,
         'replay': replay_result,
+        'backends': backend_result,
         'tasks': tasks,
         'events': events,
         'agents': agents,

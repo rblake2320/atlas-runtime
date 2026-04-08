@@ -36,7 +36,7 @@ def test_status_reads_wrapper_state(tmp_path: Path) -> None:
     assert payload["delivered"] == 3
     assert payload["gap_progress_pct"] == 29.0
     assert len(payload["verified_capabilities"]) >= 1
-    assert len(payload["open_gaps"]) == 3
+    assert len(payload["open_gaps"]) == 4
 
 
 def test_gap_meter_reflects_wrapper_gap_registry(tmp_path: Path) -> None:
@@ -67,3 +67,4 @@ def test_stdio_stream_round_trip(tmp_path: Path) -> None:
     output = json.loads(output_stream.getvalue().strip())
     assert output["id"] == 7
     assert output["result"]["content"][0]["type"] == "text"
+
